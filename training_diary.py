@@ -43,6 +43,10 @@ class TrainingDiary(object):
         return datetime.timedelta(hours=duration.tm_hour, minutes=duration.tm_min,
             seconds=duration.tm_sec).total_seconds()
 
+    def i_get_note(self):
+        """Return a session note."""
+        return input('\nPlease enter any session notes: ')
+
     def save_session(self, session):
         diary_path = os.path.join(self.DIARY_DATA_LOC, self.DIARY_DATA_FILE)
         try:
@@ -72,13 +76,14 @@ class TrainingDiary(object):
         selected_distance_unit = self.i_get_distance_unit()
         distance = self.i_get_distance(selected_distance_unit)
         duration = self.i_get_duration()
+        note = self.i_get_note()
         session = {
             'selected_session_type': selected_session_type,
             'selected_distance_unit': selected_distance_unit,
             'distance': distance,
-            'duration': duration
+            'duration': duration,
+            'note': note
         }
-        # TODO: Add feature to allow for session notes
         # TODO: Add feature to allow for session tags e.g. marathon
         # TODO: Think about backup file
         self.save_session(session)
