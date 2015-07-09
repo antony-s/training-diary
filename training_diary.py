@@ -49,6 +49,7 @@ class TrainingDiary(object):
 
     def save_session(self, session):
         diary_path = os.path.join(self.DIARY_DATA_LOC, self.DIARY_DATA_FILE)
+        diary_data = []
         try:
             os.makedirs(self.DIARY_DATA_LOC)
         except OSError as e:
@@ -56,14 +57,17 @@ class TrainingDiary(object):
                 pass
             else:
                 raise
-        with open(diary_path) as f:
-            try:
-                diary_data = json.load(f)
-            except ValueError:
-                if not os.fstat(f.fileno()).st_size:
-                    diary_data = []
-                else:
-                    raise
+        try:
+            with open(diary_path) as f:
+                try:
+                    diary_data = json.load(f)
+                except ValueError:
+                    if not os.fstat(f.fileno()).st_size:
+                        pass
+                    else:
+                        raise
+        except FileNotFoundError as e:
+            pass
 
         diary_data.append(session)
 
