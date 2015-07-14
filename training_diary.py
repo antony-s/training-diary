@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 
+import argparse
 import datetime
 import json
 import os, errno
@@ -88,10 +89,13 @@ class TrainingDiary(object):
             'duration': duration,
             'note': note
         }
-        # TODO: Add feature to allow for session tags e.g. marathon
-        # TODO: Think about backup file
         self.save_session(session)
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Process training session data')
+    parser.add_argument('-i', '--interactive', nargs='?', const=True, default=False, help='Run in interactive mode')
+    args = parser.parse_args()
     training_diary = TrainingDiary()
-    training_diary.interactive()
+    if args.interactive:
+        training_diary.interactive()
+    # TODO: Add training-session args
