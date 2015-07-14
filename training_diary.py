@@ -2,9 +2,11 @@
 
 import argparse
 import datetime
+import errno
 import json
-import os, errno
+import os
 import time
+
 
 class TrainingDiary(object):
     DIARY_DATA_LOC = os.path.expanduser('~/.training_diary')
@@ -36,13 +38,16 @@ class TrainingDiary(object):
         return input('Distance unit code: ')
 
     def i_get_distance(self, selected_distance_unit):
-        return float(input('\nPlease enter distance ({}): '.format(selected_distance_unit)))
+        return float(input('\nPlease enter distance ({}): '.format(
+                     selected_distance_unit)))
 
     def i_get_duration(self):
         """Return duration in seconds."""
-        duration = time.strptime(input('\nPlease enter your time HH:MM:SS: '), '%H:%M:%S')
-        return datetime.timedelta(hours=duration.tm_hour, minutes=duration.tm_min,
-            seconds=duration.tm_sec).total_seconds()
+        duration = time.strptime(input('\nPlease enter your time HH:MM:SS: '),
+                                 '%H:%M:%S')
+        return datetime.timedelta(hours=duration.tm_hour,
+                                  minutes=duration.tm_min,
+                                  seconds=duration.tm_sec).total_seconds()
 
     def i_get_note(self):
         """Return a session note."""
@@ -67,8 +72,12 @@ class TrainingDiary(object):
                         pass
                     else:
                         raise
-        except FileNotFoundError as e:
-            pass
+        except OSError as e:
+            if e.errno == errno.ENOENT:
+                # File doesn't exist, it's ok, we'll write it later
+                pass
+            else:
+                raise
 
         diary_data.append(session)
 
@@ -92,8 +101,11 @@ class TrainingDiary(object):
         self.save_session(session)
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Process training session data')
-    parser.add_argument('-i', '--interactive', nargs='?', const=True, default=False, help='Run in interactive mode')
+    parser = argparse.ArgumentParser(
+        description='Process training session data'
+    )
+    parser.add_argument('-i', '--interactive', nargs='?', const=True,
+                        default=False, help='Run in interactive mode')
     args = parser.parse_args()
     training_diary = TrainingDiary()
     if args.interactive:
