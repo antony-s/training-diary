@@ -114,6 +114,14 @@ class TrainingDiary(object):
             note=self.i_get_note()
         )
 
+    def non_interactive(self, args):
+        # TODO: Add validation
+        training_diary.save_session(
+            selected_session_type=args.session,
+            selected_distance_unit=args.units,
+            distance=args.distance,
+            duration=args.time
+        )
 
 if __name__ == '__main__':
     training_diary = TrainingDiary()
@@ -134,3 +142,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
     if args.interactive:
         training_diary.interactive()
+    else:
+        training_diary.non_interactive(args)
