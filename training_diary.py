@@ -57,9 +57,8 @@ class TrainingDiary(object):
             print('{name} ({key})'.format(key=key, name=distance_unit['name']))
         return input('Distance unit code: ')
 
-    def i_get_distance(self, selected_distance_unit):
-        return float(input('\nPlease enter distance ({}): '.format(
-                     selected_distance_unit)))
+    def i_get_distance(self):
+        return float(input('\nPlease enter distance: '))
 
     def i_get_duration(self):
         """Return duration in seconds."""
@@ -73,7 +72,7 @@ class TrainingDiary(object):
         """Return a session note."""
         return input('\nPlease enter any session notes: ')
 
-    def save_session(self, session):
+    def save_session(self, **session):
         diary_path = os.path.join(self.DIARY_DATA_LOC, self.DIARY_DATA_FILE)
         diary_data = []
         try:
@@ -107,19 +106,14 @@ class TrainingDiary(object):
 
     def interactive(self):
         # TODO: Add validation
-        selected_session_type = self.i_get_session_type()
-        selected_distance_unit = self.i_get_distance_unit()
-        distance = self.i_get_distance(selected_distance_unit)
-        duration = self.i_get_duration()
-        note = self.i_get_note()
-        session = {
-            'selected_session_type': selected_session_type,
-            'selected_distance_unit': selected_distance_unit,
-            'distance': distance,
-            'duration': duration,
-            'note': note
-        }
-        self.save_session(session)
+        self.save_session(
+            selected_session_type=self.i_get_session_type(),
+            selected_distance_unit=self.i_get_distance_unit(),
+            distance=self.i_get_distance(),
+            duration=self.i_get_duration(),
+            note=self.i_get_note()
+        )
+
 
 if __name__ == '__main__':
     training_diary = TrainingDiary()
