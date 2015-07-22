@@ -38,11 +38,18 @@ class TrainingDiary(object):
         'mi': {'name': 'Miles'}
     }
 
+    def get_printable_session_types(self):
+        session_types = []
+        for key, session_type in self.SESSION_TYPES.items():
+            session_types.append('{key} ({name})'.format(
+                key=key, name=session_type['name'])
+            )
+        return '\n'.join(session_types)
+
     def i_get_session_type(self):
         print('\nPlease select a session type from the following:\n')
-        for key, session_type in self.SESSION_TYPES.items():
-            print('{name} ({key})'.format(key=key, name=session_type['name']))
-        return input('Session code: ')
+        print(self.get_printable_session_types())
+        return input('\nSession code: ')
 
     def i_get_distance_unit(self):
         print('\nPlease select units for distance from the following:\n')
@@ -99,6 +106,7 @@ class TrainingDiary(object):
             print('Session saved')
 
     def interactive(self):
+        # TODO: Add validation
         selected_session_type = self.i_get_session_type()
         selected_distance_unit = self.i_get_distance_unit()
         distance = self.i_get_distance(selected_distance_unit)
@@ -114,13 +122,21 @@ class TrainingDiary(object):
         self.save_session(session)
 
 if __name__ == '__main__':
+    training_diary = TrainingDiary()
     parser = argparse.ArgumentParser(
-        description='Process training session data'
+        description='Process training session data',
+        formatter_class=argparse.RawTextHelpFormatter
     )
     parser.add_argument('-i', '--interactive', nargs='?', const=True,
                         default=False, help='Run in interactive mode')
+    parser.add_argument('-s', '--session',
+                        help='Session type code:\n{}'.format(
+                            training_diary.get_printable_session_types())
+                        )
+    parser.add_argument('-u', '--units', help='Distance units')
+    parser.add_argument('-d', '--distance', help='Session distance',
+                        type=float)
+    parser.add_argument('-t', '--time', help='Session time (HH:MM:SS)')
     args = parser.parse_args()
-    training_diary = TrainingDiary()
     if args.interactive:
         training_diary.interactive()
-    # TODO: Add training-session args
