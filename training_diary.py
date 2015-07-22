@@ -120,7 +120,8 @@ class TrainingDiary(object):
             selected_session_type=args.session,
             selected_distance_unit=args.units,
             distance=args.distance,
-            duration=args.duration
+            duration=args.duration,
+            notes=args.notes
         )
 
 if __name__ == '__main__':
@@ -139,6 +140,7 @@ if __name__ == '__main__':
     parser.add_argument('-di', '--distance', help='Session distance',
                         type=float)
     parser.add_argument('-du', '--duration', help='Session duration (HH:MM:SS)')
+    parser.add_argument('-n', '--notes', help='Session notes')
     args = parser.parse_args()
     if args.interactive:
         training_diary.interactive()
