@@ -105,14 +105,23 @@ class TrainingDiary(object):
             print('Session saved')
 
     def interactive(self):
-        # TODO: Add validation
-        self.save_session(
-            selected_session_type=self.i_get_session_type(),
-            selected_distance_unit=self.i_get_distance_unit(),
-            distance=self.i_get_distance(),
-            duration=self.i_get_duration(),
-            note=self.i_get_note()
-        )
+        while 1:
+            # Ask user if they want to add a session or view session(s)
+            action = input('(a) to add session (v) to view sessions (q) to quit: ')
+
+            if action == 'a':
+                # TODO: Add validation
+                self.save_session(
+                    selected_session_type=self.i_get_session_type(),
+                    selected_distance_unit=self.i_get_distance_unit(),
+                    distance=self.i_get_distance(),
+                    duration=self.i_get_duration(),
+                    note=self.i_get_note()
+                )
+            elif action == 'v':
+                print('# TODO: view session options')
+            elif action == 'q':
+                break
 
     def non_interactive(self, args):
         # TODO: Add validation
