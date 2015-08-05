@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+
 # Copyright 2015 Antony Semonella
 #
 # This program is free software: you can redistribute it and/or modify
