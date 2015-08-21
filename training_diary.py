@@ -125,15 +125,28 @@ class TrainingDiary(object):
             elif action == 'q':
                 break
 
+    def validate_cli_args(self, args):
+        valid = True
+        messages = []
+        if not args.session:
+            valid = False
+            messages.append('Session type required see help [-h]')
+        return valid, messages
+
     def non_interactive(self, args):
         # TODO: Add validation
-        training_diary.save_session(
-            selected_session_type=args.session,
-            selected_distance_unit=args.units,
-            distance=args.distance,
-            duration=args.duration,
-            notes=args.notes
-        )
+        valid, messages = self.validate_cli_args(args)
+        if valid:
+            training_diary.save_session(
+                selected_session_type=args.session,
+                selected_distance_unit=args.units,
+                distance=args.distance,
+                duration=args.duration,
+                notes=args.notes
+            )
+        else:
+            for message in messages:
+                print(message)
 
 if __name__ == '__main__':
     training_diary = TrainingDiary()
